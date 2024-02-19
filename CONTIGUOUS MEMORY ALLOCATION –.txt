@@ -1,0 +1,155 @@
+import tkinter as tk
+from tkinter import *
+import tkinter.ttk as ttk
+import tkinter.messagebox as tkMessageBox
+global a,b,c
+global new
+global new1
+global new2
+global processSize
+global processNo
+processNo=[1,2,3,4]
+processSize = [212, 417, 112, 426]
+new=[]
+new1=[]
+new2=[]
+newline="\n"
+def DisplayForm(new):
+   root=Tk()
+   root.geometry("250x170")
+   T = Text(root, height = 500, width = 500)
+   l = Label(root, text ="Best Fit")
+   T.insert(tk.END,processNo)
+   T.insert(tk.END,newline)
+   T.insert(tk.END,processSize)
+   T.insert(tk.END,newline)
+   T.insert(tk.END,new)
+   l.config(font =("Courier", 14))
+   b2 = Button(root, text = "Exit",command = root.destroy)
+   l.pack()
+   T.pack()
+def DisplayForm1(new1):
+   root=Tk()
+   root.geometry("250x170")
+   T = Text(root, height = 500, width = 500)
+   l = Label(root, text ="Worst Fit")
+   T.insert(tk.END,processNo)
+   T.insert(tk.END,newline)
+   T.insert(tk.END,processSize)
+   T.insert(tk.END,newline)
+   T.insert(tk.END,new1)
+   l.config(font =("Courier", 14))
+   b2 = Button(root, text = "Exit",command = root.destroy)
+   l.pack()
+   T.pack()
+def DisplayForm2(new2):
+   root=Tk()
+   root.geometry("250x170")
+   T = Text(root, height = 500, width = 500)
+   l = Label(root, text ="First Fit")
+   T.insert(tk.END,processNo)
+   T.insert(tk.END,newline)
+   T.insert(tk.END,processSize)
+   T.insert(tk.END,newline)
+   T.insert(tk.END,new2)
+   l.config(font =("Courier", 14))
+   b2 = Button(root, text = "Exit",command = root.destroy)
+   l.pack()
+   T.pack()
+def bestFit(blockSize, m, processSize, n):
+	allocation = [-1] * n
+	for i in range(n):
+		bestIdx = -1
+		for j in range(m):
+			if blockSize[j] >= processSize[i]:
+				if bestIdx == -1:
+					bestIdx = j
+				elif blockSize[bestIdx] > blockSize[j]:
+					bestIdx = j
+		if bestIdx != -1:
+			allocation[i] = bestIdx
+			blockSize[bestIdx] -= processSize[i]
+	print("Process No. Process Size	 Block no.")
+	for i in range(n):
+		print(i + 1, "		            ", processSize[i],end="             ")						
+		if allocation[i] != -1:
+			print(allocation[i] + 1)
+			a=allocation[i] + 1
+			new.append(a)
+		else:
+			print("Not Allocated")
+			new.append("Not Allocated")
+	DisplayForm(new) 
+def BestFit():
+    blockSize = [100, 500, 200, 300, 600]
+    processSize = [212, 417, 112, 426]
+    m = len(blockSize)
+    n = len(processSize)
+    bestFit(blockSize, m, processSize, n)
+def worstFit(blockSize, m, processSize, n):
+	allocation = [-1] * n
+	for i in range(n):
+		wstIdx = -1
+		for j in range(m):
+			if blockSize[j] >= processSize[i]:
+				if wstIdx == -1:
+					wstIdx = j
+				elif blockSize[wstIdx] < blockSize[j]:
+					wstIdx = j
+		if wstIdx != -1:
+			allocation[i] = wstIdx
+			blockSize[wstIdx] -= processSize[i]
+	print("Process No. Process Size   Block no.")
+	for i in range(n):
+		print(i + 1, "		            ",processSize[i], end = "	       ")
+		if allocation[i] != -1:
+			print(allocation[i] + 1)
+			b=allocation[i] + 1
+			new1.append(b)
+		else:
+			print("Not Allocated")
+			new1.append("Not Allocated")
+	DisplayForm1(new1) 
+def WorstFit():
+    blockSize = [100, 500, 200, 300, 600]
+    processSize = [212, 417, 112, 426]
+    m = len(blockSize)
+    n = len(processSize)
+    worstFit(blockSize, m, processSize, n)
+def firstFit(blockSize, m, processSize, n):
+	allocation = [-1] * n
+	for i in range(n):
+		for j in range(m):
+			if blockSize[j] >= processSize[i]:
+				allocation[i] = j
+				blockSize[j] -= processSize[i]
+				break
+	print(" Process No. Process Size	 Block no.")
+	for i in range(n):
+		print(" ", i + 1, "		 ", processSize[i],"		 ", end = "       ")
+		if allocation[i] != -1:
+			print(allocation[i] + 1)
+			c=allocation[i] + 1
+			new2.append(c)
+		else:
+			print("Not Allocated")
+			new2.append("Not Allocated")
+	DisplayForm2(new2) 
+def FirstFit():
+    blockSize = [100, 500, 200, 300, 600]
+    processSize = [212, 417, 112, 426]
+    m = len(blockSize)
+    n = len(processSize)
+    firstFit(blockSize, m, processSize, n)   
+def open():
+    login_screen=Tk()
+    login_screen.title("Select a partition")
+    login_screen.geometry("350x300")
+    Label(login_screen, text="").pack()
+    Button(login_screen, text="BestFit", width=10, height=1, command=BestFit).pack()
+    Label(login_screen, text="").pack()
+    Button(login_screen, text="WorstFit", width=10, height=1, command=WorstFit).pack()
+    Label(login_screen, text="").pack()
+    Button(login_screen, text="FirstFit", width=10, height=1, command=FirstFit).pack()
+open()
+mainloop()
